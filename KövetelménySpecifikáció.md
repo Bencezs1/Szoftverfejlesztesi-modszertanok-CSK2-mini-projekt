@@ -1,2 +1,2 @@
-# Szoftverfejleszt-si-m-dszertanok-CSK2-mini-projekt-
-
+# Szoftverfejlesztési Módszertanok
+## Követelmény Specifikáció
