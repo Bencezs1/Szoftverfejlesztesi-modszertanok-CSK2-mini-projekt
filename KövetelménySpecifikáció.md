@@ -1,0 +1,2 @@
+# Szoftverfejleszt-si-m-dszertanok-CSK2-mini-projekt-
+
