@@ -1,0 +1,43 @@
+@‌startuml
+left to right direction
+actor GUEST as g
+package REGISTERED {
+actor USER as u
+actor MODERATOR as m
+actor ADMIN as a
+}
+
+package "JOKE PORTAL" {
+usecase VIEW as UC1
+usecase "ADD/EDIT" as UC2
+usecase "DELETE OWN" as UC3
+usecase "REVIEW" as UC4
+usecase "USER ROLE MANAGEMENT" as UC5
+usecase "REGISTER" as UC6
+usecase "LOGIN" as UC7
+usecase "DELETE ANY" as UC8
+usecase "LOGOUT" as UC9
+}
+g --> UC1
+g --> UC6
+u --> UC9
+u --> UC1
+u --> UC2
+u --> UC4
+u --> UC7
+u --> UC3
+m --> UC1
+m --> UC2
+m --> UC4
+m --> UC7
+m --> UC8
+m --> UC9
+a --> UC1
+a --> UC2
+a --> UC4
+a --> UC7
+a --> UC8
+a --> UC5
+a --> UC9
+
+@‌enduml
