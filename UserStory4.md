@@ -1,0 +1,1 @@
+Peti észre vette, hogy a vicce elég gáz és törölni akarja. Az oldalra belépve, megkeresi a viccét, majd kitörli az oldalról a mellette található gombbal, hogy más ne szenvedjen miatta.
