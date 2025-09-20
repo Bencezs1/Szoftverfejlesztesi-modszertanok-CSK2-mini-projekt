@@ -1,23 +1,38 @@
 # Rendszerterv
 
 1. __A rendszer célja__
-   * A renduser célja, hogy egy fárasztó nap után a felhasználók ki tudjanak kapcsolódni, jó vicceket olvasni és megosztani egymással. Ezeket a vicceket a többi felhaszáló tudja értékelni.
+   * A rendszer célja, hogy egy fárasztó nap után a felhasználók ki tudjanak kapcsolódni, jó vicceket olvasni és megosztani egymással. Ezeket a vicceket a többi felhasználó tudja értékelni.
 
 2. __Projektterv__
-   * Projektmunkások és felelősségek:
+   * Projekt munkások és felelősségek:
    * __Backend munkálatok__: Kiss Álmos, Majoros Máté
    * __Frontend munkálatok__: Zsibók Bence, Szabó Balázs
    * __Ütemterv__:
-   * |Funció/Story|Feladat/Task|Prioritás|Becslés|Aktuális becslés|Eltelt idő|Hátralévő idő|
-     |-------------|-----------|---------|-------|----------------|----------|-------------|
-     |Követelmény specifikáció||0|12|12|12|0|
-     |Funkcionális specifikáció||0|12|12|12|0|
-     |Rendszerterv||0|16|16|8|8|
-     |Adattárolás|Adatmodell megtervezése|0|4|4|4|0|
-     ||Adatbázis megvalósítása a backenden|1|1|1|0|1|
+
+   |Funció/Story|Feladat/Task|Prioritás|Becslés|Aktuális becslés|Eltelt idő|Hátralévő idő|
+   |-------------|-----------|---------|-------|----------------|----------|-------------|
+   |Követelmény specifikáció||0|12|12|12|0|
+   |Funkcionális specifikáció||0|12|12|12|0|
+   |Rendszerterv||0|16|16|8|8|
+   |Adattárolás|Adatmodell megtervezése|0|4|4|0|4|
+   ||Adatbázis megvalósítása a backenden|1|1|1|0|1|
+   |Frontend|Kezdőoldal elkészítése|1|6|6|0|6|
+   ||Bejelentkezési oldal elkészítése|1|3|3|0|3|
+   ||Regisztrációs oldal elkészítése|1|3|3|0|3|
+   ||Új vicc irásához felület készítése|1|3|3|0|3|
+   ||Kedvenc vicceket megjelenítő felület készítése|1|2|2|0|2|
+   ||Saját vicceket megjelenítő felület készítése|1|2|2|0|2|
+   |Backend|Bejelentkezés megvalósítása|1|5|5|0|5|
+   ||Regisztráció megvalósítása|1|8|8|0|8|
+   ||Vicc felvételének megvalósítása|1|4|4|0|4|
+   ||Vicc szerkesztésének megvalósítása|1|3|3|0|3|
+   ||Vicc törlésének megvalósítása|1|3|3|0|3|
+   ||Vicc értékelésének megvalósítása|1|5|5|0|5|
+   ||Vicc kedvelésének megvalósítása|1|1|1|0|1|
+   ||Felhasználói jogok megvalósítása|1|4|4|0|4|
 
 3. __Üzleti folyamatok modellje__
-   ![Üzleti folyamatok modellje](https://cdn.discordapp.com/attachments/1415986657282494497/1418480347578105876/PP1DJuGm48Rl_HKJxXkpN-voCMdiXA3GcbBSU6mGaIXYW3qP_xl0jeF6syFxzfbfUIzV1XXQwEhgTO3dkYkBeMu_c2s6jeCenyo0xQ5YdxPuirK96gCuCwXHm9SxbMUefqDdzvqgWPeRDOUD2xb8Opa5bdqpcXRSgNk41wKDJu9nuBal2zkNy1ZZQJgStwuf2xWGLoXY4roQpT88JD0Wg9DqtNRfD4x3NBvRyldMMYK8APSymXIbdxp_RL-UwvhhfKbK5FjrXtzNuVB9TSS_Yihzad3y3nMiLZVp8psD2no5H6kY3T6Ew42qPGqP3HaD6GqPdev48RFaMd8jkPPSIwwdFL78s0y0.png?ex=68ce4644&is=68ccf4c4&hm=d7b810ea6c648d9669320467394b0b3ddc25778242dd6a851b2dd4822133ca19&)
+   ![Üzleti folyamatok modellje](Képek/uml.png)
 
 4. __Követelmények__
    * Funkcionális követelmények:
@@ -32,19 +47,19 @@
      * A felhasználók nem juthatnak hozzá más felhasználók személyes adataihoz a nevükön kívül.
      * A felhasználók nem módosíthatják mások vicceit
      * A felhasználók nem törölhetik mások vicceit.
-     * A felhasználük jelszavai hashelve tárolandók
+     * A felhasználók jelszavai hashelve tárolandók
      * Alap védekezés SQL-Injection ellen
      * Reszponzív felhasználói felület
    * Törvényi előírások, szabványok:
-     * GDPR-nek való megfelelés
-  
+     * GDPR-nak való megfelelés
+
 5. __Funkcionális terv__
     __Rendszerszereplők__:
    * Admin
    * Felhasználó
    * Moderátor
    * Vendég
-  
+
     __Rendszerhasználati esetek és lefutásaik__:
    * Admin:
      * Beléphet bármilyen szereplőként teljes hozzáférése van a rendszerhez
@@ -52,13 +67,13 @@
      * Felhasználók törlésére van lehetőségük
      * Mindent tud mint egy mezei felhasználó
    * Moderátor:
-     * A felhaszálói szinten felül tudja menedzselni a vicceket
+     * A felhasználói szinten felül tudja menedzselni a vicceket
    * Felhasználó:
      * Vicceket tud létrehozni
      * Vicceket tud értékelni
      * Saját vicceket tud törölni
      * Saját vicceket tud módosítani
-     * Viccket meg tud jelölni kedvencként
+     * Vicceket meg tud jelölni kedvencként
    * Vendég:
      * Vicceket tud nézni
      * Vicceket tud értékelni
@@ -73,6 +88,7 @@
       * Új vicc létrehozása
       * Saját viccek
       * Kedvencek
+
 6. __Fizikai környezet__
    * Az alkalmazás web platformra készül.
    * Fejlesztői eszközök:
@@ -81,11 +97,66 @@
      * React
      * Django
      * SQLite
-7. __Architekturális terv__
+
+7. __Felülettervek__
+   * Nem regisztrált felhasználó számára látható főoldal
+   ![Nem regisztrált felhasználó](Képek/HomeUnregistered.png)
+   * Regisztrált felhasználó számára látható főoldal
+   ![Regisztrált felhasználó](Képek/HomeRegistered.png)
+   * Új vicc felvétele
+   ![Új vicc felvétele](Képek/AddNewJoke.png)
+   * Bejelentkezési oldal
+   ![Bejelentkezés](Képek/Login.png)
+   * Regisztrációs oldal
+   ![Regisztáció](Képek/SignUp.png)
+   * Saját profil kezelése
+   ![Saját profil](Képek/ManageProfile.png)
+
+8. __Architekturális terv__
    * Backend:
-     * A backend egy python libary nevezetesen a django keretrendszer álltal lesz megvalósítva. Az adatok tárolását egy, a djangó álltal alapból létrehozott SQLite adatbázisban fog megtörténni. A kliensekkel JSON objektumokkal kommunikál.
+     * A backend egy python library nevezetesen a django keretrendszer által lesz megvalósítva. Az adatok tárolását egy, a django által alapból létrehozott SQLite adatbázisban fog megtörténni. A kliensekkel JSON objektumokkal kommunikál.
    * Frontend:
      * A frontend React keretrendszer használatával fogjuk megvalósítani.
-  
-8. __Implementációs terv__
-   * A frontend React keretrendszer használatával fogjuk megvalósítani, amely főként javascript használatát jelent és az oldal stílusát css stíluslapok segítségével fogjuk megformázni. A Reactos frontend külömböző komponenseit külömböző fájlokba fogjuk implementálni, ezzel bitrosítva az újrafelhasznáhatóságot és az elszeparáltságot. Ezzel igyekszünk figyelembe venni azt, hogy egy komponensenk, csak egy feladata legyen. Az oldal kommunikálni fog a django által biztosított REST API-jal.
+
+9. __Implementációs terv__
+   * A frontend React keretrendszer használatával fogjuk megvalósítani, amely főként javascript használatát jelent és az oldal stílusát css stíluslapok segítségével fogjuk megformázni. A Reactos frontend különböző komponenseit különböző fájlokba fogjuk implementálni, ezzel biztosítva az újrafelhasználhatóság és az elszeparáltságot. Ezzel igyekszünk figyelembe venni azt, hogy egy komponensnek, csak egy feladata legyen. Az oldal kommunikálni fog a django által biztosított REST API-jal.
+
+10. __Tesztterv__
+
+    * A tesztelések célja a rendszer és komponensei funkcionalitásának vizsgálata, ellenőrzése, a rendszer megfelelő működésének biztosítása.
+    * Tesztelési módok:
+      * Unit tesztelés:
+        A metódusok megfelelő müködésének vizsgálata érdekében teszteket kell írni, amelyek tesztelik az elvárt működést.
+      * Alfa teszt:
+        A teszt elsődleges célja a rendszer funkcióinak és megjelenésének tesztelése külöböző böngészőkben, illetve mobilos böngészőkben. A teszt sikeres ha az oldal megjelenése és fő funkciói elfogadhatóak különböző böngészőkben. A tesztelést a fejlesztők végzik.
+        Manuális tesztelés: Az oldal UI elemeit manuálisan is teszteljük.
+    * Tesztelendő funkciók:
+      * Backend:
+        * Képesnek kell lennie csatlakozni az webes alkalmazáshoz.
+        * Képesnek kell lennie az adatbázis adatait lekérdezni és módosítani.
+        * Képesnek kell lennie több egyszerre létező frontend példány kiszolgálására.
+        * Képesnek kell lennie minden a felület szerint elérhető funkció elvégzésére.
+      * Frontend:
+        * A felületnek reszponzívank kell lennie.
+        * A képernyőnek a képernyő terveknek megfelelően kell kinéznie.
+        * A képernyő különböző elemeinek el kell látniuk a tőlük elvárt funkcionalitást.
+        * A bejelenkezési felületnek megfelelően kell müködnie.
+        * A vicceknek olvashatónak kell lenniük.
+        * A viccek kattintásra felugró elmeként (react modal) jelennek meg.
+        * A regisztrációs felületnek elérhetónek kell lennie a bejelentkezési felületről.
+        * A regisztrációs felületen a megfelelő adatok megadásával a felhasználó regisztrálhat az oldalra.
+        * A regisztráció után a felhasználó be kell tudjon jelentkezni.
+        * Amennyiben a megadott adatok nem megfelelőek a regisztráció nem történhet meg és erről a felhasználót tájékoztatni kell.
+        * A felhasználó által beküldött viccnek az oldalon láthatóvá kell válnia.
+
+11. __Telepítési terv__
+   A webes felület eléréshez csak egy támogatott böngésző telepítése szükséges, külön szoftver telepítése nem szükséges. A szerverre a böngészőn keresztül csatlakoznak a kliensek.
+
+12. __Karbantartási terv__
+   A weboldal üzemelése során szükséges annak karbantartása. Alkalmazkodni kell a felhasználók változó igényeihez, esetlegesen új funkciók hozzáadásával fenn tartani az felhasználók érdeklődését, illetve az oldal relevanciáját.
+
+    * __Karbantartás__
+      * Corrective Maintenance: A felhasználók által felfedezett és bejelentett hibák kijavítása.
+      * Adaptive Maintenance: A program naprakészen tartása és finomhangolása.
+      * Perfective Maintenance: A szoftver hosszútávú használata érdekében végzett módosítások, új funkciók, a szoftver teljesítményének és megbízhatóságának fejlesztése.
+      * Preventive Maintenance: Olyan problémák feltárása és javítása, amelyek később gondot okozhatnak
