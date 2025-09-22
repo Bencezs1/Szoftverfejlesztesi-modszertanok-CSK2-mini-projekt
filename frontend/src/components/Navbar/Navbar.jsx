@@ -1,8 +1,13 @@
 import React from 'react'
+import Registered from './Registered'
+import Unregistered from './Unregistered'
 
-const Navbar = () => {
+const Navbar = ({isRegistered}) => {
+
   return (
-    <div>Navbar</div>
+    <div>
+      { isRegistered ? <Registered/> : <Unregistered/> }
+    </div>
   )
 }
 
