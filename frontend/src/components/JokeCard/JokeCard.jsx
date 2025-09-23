@@ -4,6 +4,7 @@ import Rating from '@mui/material/Rating';
 
 const JokeCard = () => {
 
+
     const cardHeadStyle = {
         marginBottom: "50px",
         marginTop: "20px"
@@ -20,20 +21,20 @@ const JokeCard = () => {
     }
 
     const [rating, setRating] = useState(3)
-    const [current, setCurrent] = useState(4.6)
+    const [current, setCurrent] = useState(0)
     const [showCard, setShowCard] = useState(false)
 
     const cardContent = (
       <>
         <div style={deletStyle}>
           <h5 className="card-title" style={cardHeadStyle}>Card title</h5>
-          <button type="button" className="btn btn-danger">Törlés</button>
+          <button onClick={(e)=>{e.stopPropagation()}} type="button" className="btn btn-danger">Törlés</button>
         </div>
         <p className="card-text" style={cardBodyStyle}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor mi sit amet varius congue. Curabitur gravida, nunc id ornare placerat, libero mauris hendrerit neque, at ultricies dui felis quis enim. Vestibulum non vehicula lacus. Ut feugiat suscipit risus, ut posuere ex consectetur ut. Nam id mollis leo, at sollicitudin dui. Maecenas sit amet leo lorem. Cras lobortis eu purus id posuere. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed blandit, metus ut malesuada semper, quam erat maximus tellus, nec facilisis tortor lectus vel erat. Phasellus commodo quam eros, id rhoncus leo placerat id.
         </p>
         <div style={{display: "flex", justifyContent: "space-between"}}>
-            <Rating
+            <Rating onClick={(e)=>{e.stopPropagation()}}
               value={rating}
               onChange={(event, newValue) => {
                   setRating(newValue);
@@ -47,7 +48,7 @@ const JokeCard = () => {
           </div>
         </div>
         <br />
-        <button className="btn btn-primary">Értékelés</button>
+        <button onClick={(e)=>{e.stopPropagation()}} className="btn btn-primary">Értékelés</button>
       </>
     )
 

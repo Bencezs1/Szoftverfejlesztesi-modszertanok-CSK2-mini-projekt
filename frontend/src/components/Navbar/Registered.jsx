@@ -33,7 +33,7 @@ const Registered = () => {
        contentLabel='Új vicc hozzáadása'
        style={{
           overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)", // dark backdrop
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center"

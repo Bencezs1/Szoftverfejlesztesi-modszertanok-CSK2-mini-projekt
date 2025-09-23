@@ -22,11 +22,11 @@ function AppContent() {
 
   return (
     <>
-      <Navbar isRegistered={access} />
+      <Navbar isRegistered={!!access} />
       <div className='container'>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/' element={<Home/>} />
+          <Route path='/login' element={<Login/>} />
         </Routes>
       </div>
     </>
