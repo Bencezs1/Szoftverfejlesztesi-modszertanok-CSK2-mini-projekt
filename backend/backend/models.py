@@ -19,3 +19,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
             return self.user_name
+
+class Joke(models.Model):
+    joke = models.TextField()
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="jokes")
+    time_stamp = models.DateTimeField(auto_now_add=True)
+    rate = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.joke[:50]}... - {self.user.user_name}"
