@@ -11,7 +11,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-      <AppContent/>
+        <AppContent />
       </BrowserRouter>
     </AuthProvider>
   )
@@ -22,11 +22,11 @@ function AppContent() {
 
   return (
     <>
-      <Navbar access={!!access} />
+      <Navbar isRegistered={access} />
       <div className='container'>
         <Routes>
-          <Route path='/' element={<Home/>}/>
-          <Route path='/login' element={<Login/>}/>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
       </div>
     </>

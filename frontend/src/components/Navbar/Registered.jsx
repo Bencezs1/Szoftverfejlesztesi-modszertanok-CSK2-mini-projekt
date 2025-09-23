@@ -1,37 +1,39 @@
 import React, { useState } from 'react'
 import ReactModal from 'react-modal';
 import './registered.css'
-import { Link } from 'react-router-dom'
+import { justifyContent } from '@mui/system';
 
 const Registered = () => {
   const [showForm, setShowForm] = useState(false);
-  const [joke, setJoke] = useState("");
+  
+  const handleOpen = () => setShowForm(true);
+  const handleClose = () => setShowForm(false);
 
 
 
   return (
-    <>
+     <>
       <nav>
         <div className="container">
-            <div className="logo">Logo</div>
+          <div className="logo">Logo</div>
           <div className="middle">
             <button className="favourites">Kedvencek</button>
             <button className="ownJokes">Saját viccek</button>
           </div>
           <div className="right">
-            <button className="newJoke" onClick={setShowForm(true)}>Új vicc</button>
+                        <button className="newJoke" onClick={handleOpen}>Új vicc</button>
             <button className="profile">Profil</button>
           </div>
-        </div>
+           </div>
       </nav>
 
 
       <ReactModal isOpen={showForm}
-       onRequestClose={setShowForm(false)}
+       onRequestClose={handleClose}
        contentLabel='Új vicc hozzáadása'
        style={{
           overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // dark backdrop
             display: "flex",
             alignItems: "center",
             justifyContent: "center"
@@ -57,7 +59,7 @@ const Registered = () => {
             </div>
             <div className='mb-3' style={{display: "flex", justifyContent: "space-between"}}>
               <button type="button" class="btn btn-success">Mentés</button>
-              <button type="button" onClick={setShowForm(false)} class="btn btn-danger">Mégsem</button>
+              <button type="button" onClick={handleClose} class="btn btn-danger">Mégsem</button>
             </div>
           </form>
        </ReactModal>
