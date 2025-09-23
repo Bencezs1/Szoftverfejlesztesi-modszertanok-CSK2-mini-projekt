@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from backend.views import ProtectedView
+from backend.views import ProtectedView, home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('', home, name='home'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/profile/', ProtectedView.as_view(), name='profile'),
