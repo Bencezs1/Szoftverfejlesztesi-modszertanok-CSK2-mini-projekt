@@ -5,15 +5,14 @@ import { justifyContent } from '@mui/system';
 
 const Registered = () => {
   const [showForm, setShowForm] = useState(false);
-  const [joke, setJoke] = useState("");
-
+  
   const handleOpen = () => setShowForm(true);
   const handleClose = () => setShowForm(false);
 
 
 
   return (
-    <>
+     <>
       <nav>
         <div className="container">
           <div className="logo">Logo</div>
@@ -22,10 +21,10 @@ const Registered = () => {
             <button className="ownJokes">Saját viccek</button>
           </div>
           <div className="right">
-            <button className="newJoke" onClick={handleOpen}>Új vicc</button>
+                        <button className="newJoke" onClick={handleOpen}>Új vicc</button>
             <button className="profile">Profil</button>
           </div>
-        </div>
+           </div>
       </nav>
 
 
