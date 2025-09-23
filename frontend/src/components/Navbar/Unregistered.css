@@ -19,6 +19,10 @@ nav > .container{
     margin-bottom: 5px;
 }
 
+a{
+    text-decoration: none;
+}
+
 .container .logo{
     font-size: 20px;
     margin-top: 7px;

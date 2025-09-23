@@ -1,22 +1,35 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
 import Home from "./pages/Home"
+import Login from './auth/login.jsx'
+import AuthProvider, { AuthContext } from './auth/AuthContext.jsx'
 
 function App() {
 
-  const  [isRegistered, setIsRegistered] = useState(true)
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+      <AppContent/>
+      </BrowserRouter>
+    </AuthProvider>
+  )
+}
+
+function AppContent() {
+  const { access } = useContext(AuthContext)
 
   return (
-    <BrowserRouter>
-     <Navbar isRegistered={isRegistered}/>
-        <div className='container'>
-          <Routes>
-            <Route path='/' element={<Home/>}/>
-          </Routes>
-        </div>
-    </BrowserRouter>
+    <>
+      <Navbar access={!!access} />
+      <div className='container'>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/login' element={<Login/>}/>
+        </Routes>
+      </div>
+    </>
   )
 }
 
