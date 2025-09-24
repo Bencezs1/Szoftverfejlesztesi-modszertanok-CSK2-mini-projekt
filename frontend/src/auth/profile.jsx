@@ -18,6 +18,7 @@ export default function Profile() {
     loadProfile();
   }, []);
 
-  if (!profile) return <p>Loading...</p>;
-  return <div>Welcome, {profile.username}</div>;
+  return (
+    <div></div>
+  )
 }

@@ -5,7 +5,6 @@ import Navbar from './components/Navbar/Navbar'
 import Home from "./pages/Home"
 import Login from './auth/login.jsx'
 import AuthProvider, { AuthContext } from './auth/AuthContext.jsx'
-
 function App() {
 
   return (

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "./useAuth";
 import { useNavigate } from "react-router";
-
+import "./login.css"
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -33,24 +33,32 @@ export default function Login() {
   };
 
   return (
-    <div className="login-page">
+    <div className="center">
+    <div className="loginPage">
       <h2>Bejelentkezés</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Felhasználónév"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Felhasználónév"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div><div className="form-group">
         <input
           type="password"
+          className="form-control"
           placeholder="Jelszó"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Belépés</button>
+        </div><div className="form-group">
+          <button type="submit" className="btn btn-primary">Belépés</button>
+        </div>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
+    </div>
     </div>
   );
 };
