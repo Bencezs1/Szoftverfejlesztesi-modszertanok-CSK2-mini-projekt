@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar'
 import Home from "./pages/Home"
 import Login from './auth/login.jsx'
 import AuthProvider, { AuthContext } from './auth/AuthContext.jsx'
+import Register from './auth/register.jsx'
 function App() {
 
   return (
@@ -26,6 +27,7 @@ function AppContent() {
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/login' element={<Login/>} />
+          <Route path='/register' element={<Register/>}/>
         </Routes>
       </div>
     </>

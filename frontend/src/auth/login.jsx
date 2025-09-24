@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "./useAuth";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import "./login.css"
 export default function Login() {
   const { login } = useAuth();
@@ -55,6 +55,9 @@ export default function Login() {
         />
         </div><div className="form-group">
           <button type="submit" className="btn btn-primary">Belépés</button>
+        </div>
+        <div className="form-group">
+          <Link to="/register">Nincs még felhasználói fiókod? Regisztálj!</Link>
         </div>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
