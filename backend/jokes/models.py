@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Permission
 from django.db import models
 from django.contrib.auth.hashers import make_password
 
@@ -10,6 +11,7 @@ class Category(models.Model):
 class UserProfile(models.Model):
     user_name = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=128)
+    permissions = models.ManyToManyField(Permission, blank=True)
     email = models.EmailField(unique=True)
 
     def save(self, *args, **kwargs):
