@@ -3,6 +3,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django.http import HttpResponse
+from jokes.models import UserProfile, Joke
 
 class ProtectedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -13,3 +15,24 @@ class ProtectedView(APIView):
             "username": user.username,
             "email": user.email,
         })
+def home(request):
+        if UserProfile.objects.count() == 0:
+            user1 = UserProfile.objects.create(user_name="Dezső", password="pass1", email="kuyta@mm.hu")
+            user2 = UserProfile.objects.create(user_name="Dzsenifer", password="pass2", email="cica@mm.hu")
+        else:
+            user1 = UserProfile.objects.first()
+            user2 = UserProfile.objects.last()
+
+        if Joke.objects.count() == 0:
+            Joke.objects.create(joke="Te. Lol", user=user1, rate=8.5)
+            Joke.objects.create(joke="A python tudásom", user=user2, rate=9.0)
+
+
+        jokes = Joke.objects.all()
+
+        html = "<h1>Viccek:</h1><ul>"
+        for j in jokes:
+            html += f"<li>{j.joke} - <b>{j.user.user_name}</b> ({j.rate}/10)</li>"
+        html += "</ul>"
+
+        return HttpResponse(html)
