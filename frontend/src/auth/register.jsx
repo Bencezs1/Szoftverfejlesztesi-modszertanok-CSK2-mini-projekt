@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
+import { useAuth } from "./useAuth";
+
+
 
 const Register = () => {
   const navigate = useNavigate();
+  const {login} = useAuth();
 
   const [error, setError] = useState(null);
   const [form, setForm] = useState({
@@ -51,11 +55,10 @@ const Register = () => {
         return;
       }
 
-      // ✅ Success → save tokens
-      localStorage.setItem("access", data.access);
-      localStorage.setItem("refresh", data.refresh);
-
-      navigate("/");
+      if (res.ok) {
+        login({ access: data.access, refresh: data.refresh });
+        navigate("/");
+      }
     } catch (err) {
       setError("Something went wrong. Please try again.");
     }

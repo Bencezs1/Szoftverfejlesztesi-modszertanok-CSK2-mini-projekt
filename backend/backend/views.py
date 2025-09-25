@@ -21,6 +21,7 @@ class ProtectedView(APIView):
             "username": user.username,
             "email": user.email,
         })
+
 def home(request):
         if UserProfile.objects.count() == 0:
             user1 = UserProfile.objects.create(user_name="Dezső", password="pass1", email="kuyta@mm.hu")
@@ -46,14 +47,23 @@ def home(request):
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
+    def perform_create(self, serializer):
+        validated_data = serializer.validated_data
+        validated_data.pop('password2', None)
+
+        self.user = UserProfile.objects.create_user(
+            user_name=validated_data['user_name'],
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        user = serializer.save()  # get the newly created user
 
-        # Generate JWT tokens for the new user
-        refresh = RefreshToken.for_user(user)
+        self.perform_create(serializer)
+
+        refresh = RefreshToken.for_user(self.user)
 
         return Response({
             "message": "User registered successfully",
