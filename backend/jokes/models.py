@@ -1,6 +1,9 @@
 from django.contrib.auth.models import Permission
 from django.db import models
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils import timezone
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -8,19 +11,36 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class UserProfile(models.Model):
-    user_name = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=128)
-    permissions = models.ManyToManyField(Permission, blank=True)
-    email = models.EmailField(unique=True)
+class UserProfileManager(BaseUserManager):
+    def create_user(self, email, user_name, password=None, **extra_fields):
+        if not email:
+            raise ValueError("Users must have an email address")
+        email = self.normalize_email(email)
+        user = self.model(email=email, user_name=user_name, **extra_fields)
+        user.set_password(password)  # handles hashing
+        user.save(using=self._db)
+        return user
 
-    def save(self, *args, **kwargs):
-            if not self.password.startswith('pbkdf2_'):
-                self.password = make_password(self.password)
-            super().save(*args, **kwargs)
+    def create_superuser(self, email, user_name, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        return self.create_user(email, user_name, password, **extra_fields)
+
+
+class UserProfile(AbstractBaseUser, PermissionsMixin):
+    user_name = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    objects = UserProfileManager()
+
+    USERNAME_FIELD = "email"         # login with email
+    REQUIRED_FIELDS = ["user_name"]  # prompted when creating superuser
 
     def __str__(self):
-            return self.user_name
+        return self.user_name
 
 class Joke(models.Model):
     joke = models.TextField()

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./login.css"
+import "./login.css";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -34,20 +34,26 @@ const Register = () => {
           username: form.username,
           email: form.email,
           password: form.password,
-          password2: form.password2
+          password2: form.password2,
         }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const errData = await res.json();
-        if (errData?.email) {
-          console.log(errData)
+        if (data?.email) {
           setError("Email already exists");
+        } else if (data?.detail) {
+          setError(data.detail);
         } else {
           setError("Registration failed. Please try again.");
         }
         return;
       }
+
+      // ✅ Success → save tokens
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
 
       navigate("/");
     } catch (err) {
@@ -64,59 +70,66 @@ const Register = () => {
 
   return (
     <div className="center">
-    <div className="register-page">
-      <h2>Regisztráció</h2>
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          name="username"
-          placeholder="Felhasználónév"
-          value={form.username}
-          onChange={handleChange}
-          required
-        />
-        </div><div className="form-group">
-        <input
-          type="email"
-          className="form-control"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-        </div><div className="form-group">
-        <input
-          type="password"
-          name="password"
-          className="form-control"
-          placeholder="Jelszó"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-        </div><div className="form-group">
-        <input
-          type="password"
-          name="password2"
-          className="form-control"
-          placeholder="Jelszó újra"
-          value={form.password2}
-          onChange={handleChange}
-          required
-        />
-        </div><div className="form-group">
-        <button type="submit" className="btn btn-primary" disabled={!isFormValid}>
-          Regisztráció
-        </button>
-        </div>
+      <div className="register-page">
+        <h2>Regisztráció</h2>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              className="form-control"
+              name="username"
+              placeholder="Felhasználónév"
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="email"
+              className="form-control"
+              name="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              placeholder="Jelszó"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="password"
+              name="password2"
+              className="form-control"
+              placeholder="Jelszó újra"
+              value={form.password2}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={!isFormValid}
+            >
+              Regisztráció
+            </button>
+          </div>
+        </form>
 
-      </form>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
     </div>
   );
 };

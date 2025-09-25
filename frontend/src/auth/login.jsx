@@ -5,7 +5,7 @@ import "./login.css"
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -17,7 +17,7 @@ export default function Login() {
       const res = await fetch("http://127.0.0.1:8000/api/token/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (!res.ok) {
@@ -41,9 +41,9 @@ export default function Login() {
           <input
             type="text"
             className="form-control"
-            placeholder="Felhasználónév"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Email cím"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div><div className="form-group">
         <input
