@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../auth/useAuth";
+import { Link } from 'react-router-dom'
 import "./registered.css";
 
 const Registered = () => {
@@ -26,10 +27,16 @@ const Registered = () => {
     <>
       <nav>
         <div className="container">
-          <div className="logo">Logo</div>
+          <Link className="logo" to="/">
+            <div className="logo">Logo</div>
+          </Link>
           <div className="middle">
-            <button className="favourites">Kedvencek</button>
-            <button className="ownJokes">Saját viccek</button>
+            <Link to="/favourite">
+              <button className="favourites">Kedvencek</button>
+            </Link>
+            <Link to="/own">
+              <button className="ownJokes">Saját viccek</button>
+            </Link>
           </div>
           <div className="right">
             <button className="newJoke" onClick={handleOpen}>
