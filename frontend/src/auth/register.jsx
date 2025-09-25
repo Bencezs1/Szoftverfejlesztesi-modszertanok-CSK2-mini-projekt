@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./login.css"
 
 const Register = () => {
   const navigate = useNavigate();
@@ -60,47 +61,60 @@ const Register = () => {
   ].every((field) => (field || "").trim() !== "");
 
   return (
+    <div className="center">
     <div className="register-page">
       <h2>Regisztráció</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="form-group">
         <input
           type="text"
+          className="form-control"
           name="username"
           placeholder="Felhasználónév"
           value={form.username}
           onChange={handleChange}
           required
         />
+        </div><div className="form-group">
         <input
           type="email"
+          className="form-control"
           name="email"
           placeholder="Email"
           value={form.email}
           onChange={handleChange}
           required
         />
+        </div><div className="form-group">
         <input
           type="password"
           name="password"
+          className="form-control"
           placeholder="Jelszó"
           value={form.password}
           onChange={handleChange}
           required
         />
+        </div><div className="form-group">
         <input
           type="password"
           name="password2"
+          className="form-control"
           placeholder="Jelszó újra"
           value={form.password2}
           onChange={handleChange}
           required
         />
-        <button type="submit" disabled={!isFormValid}>
+        </div><div className="form-group">
+        <button type="submit" className="btn btn-primary" disabled={!isFormValid}>
           Regisztráció
         </button>
+        </div>
+
       </form>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
+    </div>
     </div>
   );
 };
