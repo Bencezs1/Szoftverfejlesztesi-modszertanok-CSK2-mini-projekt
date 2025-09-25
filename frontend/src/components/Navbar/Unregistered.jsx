@@ -6,10 +6,12 @@ const Unregistered = () => {
   return (
     <nav>
         <div className='container'>
+          <Link to="/">
             <div className='logo'>Logo</div>
-            <Link to="/login">
-              <button className='login'>Bejelentkezés</button>
-            </Link>
+          </Link>
+          <Link to="/login">
+            <button className='login'>Bejelentkezés</button>
+          </Link>
         </div>
     </nav>
   )
