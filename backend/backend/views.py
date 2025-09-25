@@ -5,6 +5,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse
 from jokes.models import UserProfile, Joke
+from rest_framework import status
+from rest_framework import generics
+from .serializer import RegisterSerializer
+
 
 class ProtectedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -36,3 +40,12 @@ def home(request):
         html += "</ul>"
 
         return HttpResponse(html)
+
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)

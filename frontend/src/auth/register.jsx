@@ -33,12 +33,14 @@ const Register = () => {
           username: form.username,
           email: form.email,
           password: form.password,
+          password2: form.password2
         }),
       });
 
       if (!res.ok) {
         const errData = await res.json();
         if (errData?.email) {
+          console.log(errData)
           setError("Email already exists");
         } else {
           setError("Registration failed. Please try again.");
