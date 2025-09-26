@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -44,7 +45,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 class Joke(models.Model):
     joke = models.TextField()
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="jokes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="jokes")
     time_stamp = models.DateTimeField(auto_now_add=True)
     rate = models.FloatField(default=0.0)
 

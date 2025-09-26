@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from jokes.models import UserProfile
+from jokes.models import UserProfile, Joke
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -47,3 +47,19 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ["id", "username", "email", "date_joined"]
+
+
+class JokeSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.user_name", read_only=True)  # display name
+
+    class Meta:
+        model = Joke
+        fields = ["id", "joke", "username", "rate", "time_stamp"]
+        read_only_fields = ["id", "username", "rate", "time_stamp"]  # these are auto-set
+
+    def create(self, validated_data):
+        """
+        Automatically attach the current user when creating a joke.
+        """
+        user = self.context["request"].user
+        return Joke.objects.create(user=user, **validated_data)

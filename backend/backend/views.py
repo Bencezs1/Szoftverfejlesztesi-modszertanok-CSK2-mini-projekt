@@ -8,8 +8,8 @@ from jokes.models import UserProfile, Joke
 from rest_framework import status
 from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializer import RegisterSerializer, CustomTokenObtainPairSerializer, ProfileSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+from . import serializer as sr
 
 
 class ProtectedView(APIView):
@@ -45,7 +45,7 @@ def home(request):
         return HttpResponse(html)
 
 class RegisterView(generics.CreateAPIView):
-    serializer_class = RegisterSerializer
+    serializer_class = sr.RegisterSerializer
 
     def perform_create(self, serializer):
         validated_data = serializer.validated_data
@@ -72,12 +72,28 @@ class RegisterView(generics.CreateAPIView):
         }, status=status.HTTP_201_CREATED)
 
 class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+    serializer_class = sr.CustomTokenObtainPairSerializer
 
 
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        serializer = ProfileSerializer(request.user)
+        serializer = sr.ProfileSerializer(request.user)
         return Response(serializer.data)
+
+
+class UserJokesView(generics.ListCreateAPIView):
+    serializer_class = sr.JokeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Only return jokes belonging to the logged-in user
+        return Joke.objects.filter(user=self.request.user).order_by("-time_stamp")
+
+
+class AllJokesView(generics.ListCreateAPIView):
+    serializer_class = sr.JokeSerializer
+    def get_queryset(self):
+        # Only return jokes belonging to the logged-in user
+        return Joke.objects.order_by("-time_stamp")
