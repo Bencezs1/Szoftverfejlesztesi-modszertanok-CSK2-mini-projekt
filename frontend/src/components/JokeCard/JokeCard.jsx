@@ -3,28 +3,28 @@ import ReactModal from 'react-modal';
 import Rating from '@mui/material/Rating';
 import { useAuth } from "../../auth/useAuth";
 
-const JokeCard = ({joke}) => {
+const JokeCard = ({ joke, refreshJokes }) => {
   const { apiFetch } = useAuth();
-    const [profile, setProfile] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-  
-    useEffect(() => {
-      async function loadProfile() {
-        try {
-          const res = await apiFetch("/api/profile/");
-          if (!res.ok) throw new Error("Failed to fetch profile");
-          const data = await res.json();
-          setProfile(data);
-        } catch (err) {
-          setError(err)
-          console.error(err.message);
-        } finally {
-          setLoading(false);
-        }
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadProfile() {
+      try {
+        const res = await apiFetch("/api/profile/");
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        const data = await res.json();
+        setProfile(data);
+      } catch (err) {
+        setError(err)
+        console.error(err.message);
+      } finally {
+        setLoading(false);
       }
-      loadProfile();
-    }, []);
+    }
+    loadProfile();
+  }, []);
 
   const cardHeadStyle = {
     marginBottom: "50px",
@@ -59,12 +59,16 @@ const JokeCard = ({joke}) => {
     setIsRated(true);
   }
 
+  const handleDelete = (e) => {
+    e.stopPropagation();
+  }
+
   const cardContent = (
     <>
       <div style={deletStyle}>
         <h5 className="card-title" style={cardHeadStyle}>Card title</h5>
         {joke.username == profile?.username ? (
-          <button type="button" className="btn btn-danger">
+          <button onClick={handleDelete} type="button" className="btn btn-danger">
             Törlés
           </button>
         ) : (
