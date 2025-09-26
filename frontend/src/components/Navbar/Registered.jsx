@@ -5,12 +5,11 @@ import { Link } from 'react-router-dom'
 import "./registered.css";
 import AddJoke from "../AddJoke/AddJoke";
 
-const Registered = () => {
+const Registered = ({refreshJokes}) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  
   const [showForm, setShowForm] = useState(false);
   const handleOpen = () => setShowForm(true);
   const handleClose = () => setShowForm(false);
@@ -71,8 +70,7 @@ const Registered = () => {
         </div>
       </nav>
 
-      <AddJoke handleClose={handleClose} showForm={showForm}/>
-      
+      <AddJoke handleClose={handleClose} showForm={showForm} refreshJokes={refreshJokes}/>
     </>
   );
 };

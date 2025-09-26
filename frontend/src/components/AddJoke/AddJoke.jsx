@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { useAuth } from "../../auth/useAuth";
 
-const AddJoke = ({ handleClose, showForm, refreshJokes }) => {
+const AddJoke = ({ handleClose, showForm, refreshJokes}) => {
   const { apiFetch, isAuthenticated } = useAuth();
   const [title, setTitle] = useState(""); // if you later want to add a title field
   const [jokeContent, setJokeContent] = useState("");
