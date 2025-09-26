@@ -96,3 +96,15 @@ class AllJokesView(generics.ListCreateAPIView):
     def get_queryset(self):
         # Only return jokes belonging to the logged-in user
         return Joke.objects.order_by("-time_stamp")
+
+class JokeDeleteView(generics.DestroyAPIView):
+    queryset = Joke.objects.all()
+    serializer_class = sr.JokeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        joke = super().get_object()
+        # Only allow the owner to delete
+        if joke.user != self.request.user:
+            raise PermissionDenied("You do not have permission to delete this joke.")
+        return joke

@@ -51,6 +51,27 @@ const JokeCard = ({ joke, refreshJokes }) => {
   const [isRated, setIsRated] = useState(false);
   const [isFav, setIsFav] = useState(false);
 
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDelete = async (e) => {
+    e.stopPropagation();
+    if (!window.confirm("Biztosan törölni szeretnéd ezt a viccet?")) return;
+
+    try {
+      setDeleting(true);
+      const res = await apiFetch(`/api/joke/${joke.id}/delete/`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Hiba a vicc törlése közben");
+      //refreshJokes();
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Törlés nem sikerült");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const handleAddToFav = (e) => {
     e.stopPropagation();
     setIsFav(true);
@@ -61,10 +82,6 @@ const JokeCard = ({ joke, refreshJokes }) => {
     setIsRated(true);
   };
 
-  const handleDelete = (e) => {
-    e.stopPropagation();
-  };
-
   const cardContent = (
     <>
       <div style={deletStyle}>
@@ -72,7 +89,7 @@ const JokeCard = ({ joke, refreshJokes }) => {
           Card title
         </h5>
         {isAuthenticated &&
-          (joke.username == profile?.username ? (
+          (joke.username === profile?.username ? (
             <button
               onClick={handleDelete}
               type="button"

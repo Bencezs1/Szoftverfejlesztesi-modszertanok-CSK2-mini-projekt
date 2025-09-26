@@ -28,4 +28,5 @@ urlpatterns = [
     path("api/profile/", views.ProfileView.as_view(), name="profile"),
     path("api/jokes/", views.UserJokesView.as_view(), name="user-jokes"),
     path("api/alljokes/", views.AllJokesView.as_view(), name="all-jokes"),
+    path("api/joke/<int:pk>/delete/", views.JokeDeleteView.as_view(), name="joke-delete"),
 ]
