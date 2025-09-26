@@ -61,3 +61,15 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f"{self.userid.user_name} favorited {self.jokeid.id}"
+
+class Rating(models.Model):
+    joke = models.ForeignKey(Joke, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='ratings')
+    score = models.PositiveSmallIntegerField()
+    rated_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('joke', 'user')
+
+    def __str__(self):
+        return f"{self.user.user_name} rated {self.joke.id} as {self.score}"
