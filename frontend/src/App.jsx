@@ -8,6 +8,7 @@ import AuthProvider, { AuthContext } from './auth/AuthContext.jsx'
 import Register from './auth/register.jsx'
 import OwnJokes from './pages/OwnJokes.jsx'
 import FavJokes from './pages/FavJokes.jsx'
+import Profile from './auth/profile.jsx'
 function App() {
 
   return (
@@ -32,6 +33,7 @@ function AppContent() {
           <Route path='/register' element={<Register/>}/>
           <Route path='/own' element={<OwnJokes/>}/>
           <Route path='/favourite' element={<FavJokes/>}/>
+          <Route path='/profile' element={<Profile/>}/>
         </Routes>
       </div>
     </>

@@ -34,3 +34,16 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=password
         )
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ["id", "user_name", "email", "date_joined"]  # expose these only
+
+    # optional: if you want the JSON to have "username" instead of "user_name"
+    username = serializers.CharField(source="user_name", read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ["id", "username", "email", "date_joined"]

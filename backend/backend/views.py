@@ -8,7 +8,7 @@ from jokes.models import UserProfile, Joke
 from rest_framework import status
 from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializer import RegisterSerializer, CustomTokenObtainPairSerializer
+from .serializer import RegisterSerializer, CustomTokenObtainPairSerializer, ProfileSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -73,3 +73,11 @@ class RegisterView(generics.CreateAPIView):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = ProfileSerializer(request.user)
+        return Response(serializer.data)
