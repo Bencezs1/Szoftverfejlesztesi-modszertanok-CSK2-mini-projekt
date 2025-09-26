@@ -1,8 +1,6 @@
-# myapp/views.py
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.http import HttpResponse
 from jokes.models import UserProfile, Joke
 from rest_framework import status
@@ -94,6 +92,7 @@ class UserJokesView(generics.ListCreateAPIView):
 
 class AllJokesView(generics.ListCreateAPIView):
     serializer_class = sr.JokeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_queryset(self):
         # Only return jokes belonging to the logged-in user
         return Joke.objects.order_by("-time_stamp")
