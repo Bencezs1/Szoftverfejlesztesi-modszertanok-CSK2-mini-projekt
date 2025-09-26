@@ -7,6 +7,7 @@ export default function AuthProvider({ children }) {
   const [access, setAccess] = useState(localStorage.getItem("access"));
   const [refresh, setRefresh] = useState(localStorage.getItem("refresh"));
   const refreshIntervalRef = useRef(null);
+  const isAuthenticated = !!access
 
   // Login function
   const login = ({ access: newAccess, refresh: newRefresh }) => {
@@ -51,13 +52,13 @@ export default function AuthProvider({ children }) {
 
     options.headers = {
       ...(options.headers || {}),
-      Authorization: `Bearer ${token}`,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       "Content-Type": "application/json",
     };
 
     let res = await fetch(`http://127.0.0.1:8000${endpoint}`, options);
 
-    if (res.status === 401) {
+    if (res.status === 401 && token) {
       try {
         token = await refreshToken();
         options.headers.Authorization = `Bearer ${token}`;
@@ -86,7 +87,7 @@ export default function AuthProvider({ children }) {
     };
   }, [refresh]);
 
-  const value = { access, refresh, login, logout, apiFetch };
+  const value = { access, refresh, isAuthenticated, login, logout, apiFetch };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

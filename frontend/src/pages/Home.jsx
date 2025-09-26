@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import JokeCard from '../components/JokeCard/JokeCard'
 import { useAuth } from "../auth/useAuth";
 
-const home = () => {
+const Home = () => {
 
   const { apiFetch } = useAuth();
   const [joke, setJoke] = useState([]);
@@ -56,4 +56,4 @@ const home = () => {
   )
 }
 
-export default home
+export default Home
