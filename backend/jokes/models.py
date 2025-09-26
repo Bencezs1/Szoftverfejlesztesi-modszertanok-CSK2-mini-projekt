@@ -51,3 +51,13 @@ class Joke(models.Model):
 
     def __str__(self):
         return f"{self.joke[:50]}... - {self.user.user_name}"
+
+class Favorite(models.Model):
+    jokeid = models.ForeignKey(Joke, on_delete=models.CASCADE, related_name="favorited_by_users")
+    userid = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="favorite_jokes")
+
+    class Meta:
+        unique_together = ('jokeid', 'userid')
+
+    def __str__(self):
+        return f"{self.userid.user_name} favorited {self.jokeid.id}"
