@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./useAuth";
+import "./profile.css"
 
 export default function Profile() {
   const { apiFetch } = useAuth();
@@ -28,8 +29,8 @@ export default function Profile() {
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
 
   return (
-    <div className="profile-container">
-      <h2>My Profile</h2>
+    <div className="container profile-container">
+      <h2>Saját profil</h2>
       <p><strong>Felhasználó név:</strong> {profile.username}</p>
       <p><strong>Email:</strong> {profile.email}</p>
       <p><strong>Csatlakozás dátuma:</strong> {new Date(profile.date_joined).toLocaleDateString()}</p>
