@@ -47,7 +47,6 @@ const JokeCard = ({ joke, refreshJokes }) => {
   const [showCard, setShowCard] = useState(false);
 
   // TODO: change to fetch instead of useState
-  const [current, setCurrent] = useState(0);
   const [isRated, setIsRated] = useState(false);
   const [isFav, setIsFav] = useState(false);
 
