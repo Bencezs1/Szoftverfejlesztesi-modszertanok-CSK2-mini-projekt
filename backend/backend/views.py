@@ -96,3 +96,13 @@ class AllJokesView(generics.ListCreateAPIView):
     def get_queryset(self):
         # Only return jokes belonging to the logged-in user
         return Joke.objects.order_by("-time_stamp")
+    
+class JokeDeleteView(generics.DestroyAPIView):
+    serializer_class = sr.JokeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk, *args, **kwargs):
+        joke = Joke.objects.get(pk=pk)
+        joke.delete()
+        
+        return Response(status=status.HTTP_204_NO_CONTENT)

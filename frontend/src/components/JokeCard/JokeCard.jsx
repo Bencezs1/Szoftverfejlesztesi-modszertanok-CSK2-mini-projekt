@@ -60,9 +60,19 @@ const JokeCard = ({ joke, refreshJokes }) => {
     setIsRated(true);
   };
 
-  const handleDelete = (e) => {
-    e.stopPropagation();
-  };
+  const handleDelete = async (e, jokeId) => {
+  e.stopPropagation();
+  if (window.confirm("Tényleg törölni akarod?") === true){
+    try {
+      const res = await apiFetch(`/api/deletejoke/${jokeId}/`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete joke");
+
+      refreshJokes();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+};
 
   const cardContent = (
     <>
@@ -73,7 +83,7 @@ const JokeCard = ({ joke, refreshJokes }) => {
         {isAuthenticated &&
           (joke.username == profile?.username ? (
             <button
-              onClick={handleDelete}
+              onClick={(e) => handleDelete(e, joke.id)}
               type="button"
               className="btn btn-danger"
             >
