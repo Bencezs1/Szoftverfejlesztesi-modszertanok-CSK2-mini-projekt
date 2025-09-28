@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { useAuth } from "../../auth/useAuth";
 
-const AddJoke = ({ handleClose, showForm, refreshJokes}) => {
+const AddJoke = ({ handleClose, showForm, onSaved }) => {
   const { apiFetch, isAuthenticated } = useAuth();
-  const [title, setTitle] = useState(""); // if you later want to add a title field
   const [jokeContent, setJokeContent] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  if (!isAuthenticated) return null;
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
     if (!jokeContent.trim()) return setError("A vicc szöveg nem lehet üres.");
 
     setLoading(true);
@@ -19,15 +19,20 @@ const AddJoke = ({ handleClose, showForm, refreshJokes}) => {
     try {
       const res = await apiFetch("/api/jokes/", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ joke: jokeContent }),
       });
 
       if (!res.ok) throw new Error("Vicce hozzáadása nem sikerült.");
 
       setJokeContent("");
-      setTitle("");
-      //refreshJokes(); // refresh the jokes list in the parent
-      handleClose(); // close the modal
+
+
+      if (typeof onSaved === "function") {
+        await onSaved();
+      }
+
+      handleClose();
     } catch (err) {
       console.error(err);
       setError(err.message || "Hiba történt.");
@@ -35,8 +40,6 @@ const AddJoke = ({ handleClose, showForm, refreshJokes}) => {
       setLoading(false);
     }
   };
-
-  if (!isAuthenticated) return null; // don't render modal if user is not logged in, just for safety, not actually needed, the button does not show unless logged in
 
   return (
     <ReactModal
@@ -60,22 +63,8 @@ const AddJoke = ({ handleClose, showForm, refreshJokes}) => {
         },
       }}
     >
-      <h2>Új vicc hozzáadáas</h2>
+      <h2>Új vicc hozzáadása</h2>
       <form onSubmit={handleSubmit}>
-        {/* <div className="mb-3">
-          <label htmlFor="jokeName" className="form-label">
-            Cím (opcionális)
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="jokeName"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Adj címet a viccnek (opcionális)"
-          />
-        </div>
-        For later if the joke needs a title. */}
         <div className="mb-3">
           <label htmlFor="jokeContent" className="form-label">
             Szöveg
@@ -88,7 +77,7 @@ const AddJoke = ({ handleClose, showForm, refreshJokes}) => {
             onChange={(e) => setJokeContent(e.target.value)}
             placeholder="A legviccesebb vicc helye"
             required
-          ></textarea>
+          />
         </div>
         {error && <div className="text-danger mb-2">{error}</div>}
         <div

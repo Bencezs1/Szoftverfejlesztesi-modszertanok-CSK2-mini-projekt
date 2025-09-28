@@ -1,27 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../auth/useAuth";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import "./registered.css";
 import AddJoke from "../AddJoke/AddJoke";
 
-const Registered = ({refreshJokes}) => {
+const Registered = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const { logout } = useAuth();
+  const { logout, apiFetch } = useAuth();
   const navigate = useNavigate();
 
   const [showForm, setShowForm] = useState(false);
+  const [jokes, setJokes] = useState([]);
+
+  const refreshJokes = useCallback(async () => {
+    try {
+      const res = await apiFetch("/api/alljokes/");
+      if (!res.ok) throw new Error("Nem sikerült betölteni a vicceket.");
+      const data = await res.json();
+      setJokes(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [apiFetch]);
+
   const handleOpen = () => setShowForm(true);
   const handleClose = () => setShowForm(false);
 
-
-  const handleProfileClick = () => {
-    setShowDropdown((prev) => !prev);
-  };
+  const handleProfileClick = () => setShowDropdown((prev) => !prev);
 
   const handleLogout = () => {
     logout();
-    navigate("/"); // redirect to login after logout
+    navigate("/");
   };
 
   return (
@@ -70,7 +80,11 @@ const Registered = ({refreshJokes}) => {
         </div>
       </nav>
 
-      <AddJoke handleClose={handleClose} showForm={showForm} refreshJokes={refreshJokes}/>
+      <AddJoke
+        showForm={showForm}
+        handleClose={handleClose}
+        onSaved={refreshJokes}
+      />
     </>
   );
 };

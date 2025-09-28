@@ -1,0 +1,24 @@
+.profile-container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 400px;
+    width: 400px;
+}
+
+h2{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+div.profile-container > p{
+    border: 0.1em solid black;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+div.profile-container > p:hover{
+    background-color: yellow;
+}

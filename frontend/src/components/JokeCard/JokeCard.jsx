@@ -47,30 +47,10 @@ const JokeCard = ({ joke, refreshJokes }) => {
   const [showCard, setShowCard] = useState(false);
 
   // TODO: change to fetch instead of useState
-  const [current, setCurrent] = useState(0);
   const [isRated, setIsRated] = useState(false);
   const [isFav, setIsFav] = useState(false);
 
   const [deleting, setDeleting] = useState(false);
-
-  const handleDelete = async (e) => {
-    e.stopPropagation();
-    if (!window.confirm("Biztosan törölni szeretnéd ezt a viccet?")) return;
-
-    try {
-      setDeleting(true);
-      const res = await apiFetch(`/api/joke/${joke.id}/delete/`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Hiba a vicc törlése közben");
-      //refreshJokes();
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Törlés nem sikerült");
-    } finally {
-      setDeleting(false);
-    }
-  };
 
   const handleAddToFav = (e) => {
     e.stopPropagation();
@@ -82,6 +62,23 @@ const JokeCard = ({ joke, refreshJokes }) => {
     setIsRated(true);
   };
 
+  const handleDelete = async (e, jokeId) => {
+  e.stopPropagation();
+  if (window.confirm("Tényleg törölni akarod?") === true){
+    try {
+      setDeleting(true);
+      const res = await apiFetch(`/api/deletejoke/${jokeId}/`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete joke");
+
+      refreshJokes();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeleting(false);
+    }
+  }
+};
+
   const cardContent = (
     <>
       <div style={deletStyle}>
@@ -91,7 +88,7 @@ const JokeCard = ({ joke, refreshJokes }) => {
         {isAuthenticated &&
           (joke.username === profile?.username ? (
             <button
-              onClick={handleDelete}
+              onClick={(e) => handleDelete(e, joke.id)}
               type="button"
               className="btn btn-danger"
             >
