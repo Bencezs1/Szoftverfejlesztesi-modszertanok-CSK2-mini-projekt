@@ -102,9 +102,9 @@ class JokeDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, pk, *args, **kwargs):
+        joke = Joke.objects.get(pk=pk)
         if joke.user != self.request.user:
             raise PermissionError("You do not have permission to delete this joke.")
-        joke = Joke.objects.get(pk=pk)
         joke.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)

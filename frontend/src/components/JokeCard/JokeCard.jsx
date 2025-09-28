@@ -83,7 +83,7 @@ const JokeCard = ({ joke, refreshJokes }) => {
     <>
       <div style={deletStyle}>
         <h5 className="card-title" style={cardHeadStyle}>
-          Card title
+          {joke.username}
         </h5>
         {isAuthenticated &&
           (joke.username === profile?.username ? (
