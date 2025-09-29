@@ -14,7 +14,7 @@ const FavJokes = () => {
   useEffect(() => {
     async function loadFavJoke() {
       try {
-        const res = await apiFetch("/favorites/");
+        const res = await apiFetch("/api/favorites/");
         if (!res.ok) throw new Error("Failed to fetch favourite joke");
         const data = await res.json();
         setJoke(data);

@@ -22,7 +22,7 @@ const JokeCard = ({ joke, refreshJokes = () => {}, isFavoritePage = false }) => 
           const dataProfile = await resProfile.json();
           setProfile(dataProfile);
 
-          const resFav = await apiFetch("/favorites/");
+          const resFav = await apiFetch("/api/favorites/");
           if (!resFav.ok) throw new Error("Failed to fetch favorites");
           const dataFav = await resFav.json();
 
@@ -50,7 +50,7 @@ const JokeCard = ({ joke, refreshJokes = () => {}, isFavoritePage = false }) => 
   const handleAddToFav = async (e, jokeId) => {
   e.stopPropagation();
   try {
-    const res = await apiFetch("/favorites/", {
+    const res = await apiFetch("/api/favorites/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ jokeid: jokeId }),
