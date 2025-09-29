@@ -11,27 +11,11 @@ const FavJokes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const refreshJokes = () => {
-    async function loadJoke() {
-      try {
-        const res = await apiFetch("/api/jokes/");
-        if (!res.ok) throw new Error("Failed to fetch joke");
-        const data = await res.json();
-        setJoke(data);
-      } catch (err) {
-        setError(err)
-        console.error(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadJoke();
-  }
   useEffect(() => {
-    async function loadJoke() {
+    async function loadFavJoke() {
       try {
-        const res = await apiFetch("/api/jokes/");
-        if (!res.ok) throw new Error("Failed to fetch joke");
+        const res = await apiFetch("/favorites/");
+        if (!res.ok) throw new Error("Failed to fetch favourite joke");
         const data = await res.json();
         setJoke(data);
       } catch (err) {
@@ -41,18 +25,22 @@ const FavJokes = () => {
         setLoading(false);
       }
     }
-    loadJoke()
+    loadFavJoke();
   }, []);
 
   return (
     <div className="container mt-4">
       <div className="row g-3">
-        <div className="col-12 col-md-6 col-lg-4">
-          <JokeCard joke={joke} refreshJokes={refreshJokes}/>
-        </div>
-        <div className="col-12 col-md-6 col-lg-4">
-          <JokeCard joke={joke} refreshJokes={refreshJokes} />
-        </div>
+        {joke.map((fav) => (
+          <div key={fav.id} className="col-12 col-md-6 col-lg-4">
+            <JokeCard joke={{
+              id: fav.jokeid,
+              username: fav.username,
+              joke: fav.joke_text,
+              rate: fav.rate || 0
+            }} isFavoritePage={true} />
+          </div>
+        ))}
       </div>
     </div>
   )

@@ -3,20 +3,34 @@ import ReactModal from "react-modal";
 import Rating from "@mui/material/Rating";
 import { useAuth } from "../../auth/useAuth";
 
-const JokeCard = ({ joke, refreshJokes }) => {
+const JokeCard = ({ joke, refreshJokes = () => {}, isFavoritePage = false }) => {
   const { apiFetch, isAuthenticated } = useAuth();
   const [profile, setProfile] = useState(null);
+  const [isFav, setIsFav] = useState(false);
+  const [favId, setFavId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const showDeleteButton = !isFavoritePage && joke.username === profile?.username;
+
   useEffect(() => {
-    async function loadProfile() {
+    async function loadProfileAndFavs() {
       try {
         if (isAuthenticated) {
-          const res = await apiFetch("/api/profile/");
-          if (!res.ok) throw new Error("Failed to fetch profile");
-          const data = await res.json();
-          setProfile(data);
+          const resProfile = await apiFetch("/api/profile/");
+          if (!resProfile.ok) throw new Error("Failed to fetch profile");
+          const dataProfile = await resProfile.json();
+          setProfile(dataProfile);
+
+          const resFav = await apiFetch("/favorites/");
+          if (!resFav.ok) throw new Error("Failed to fetch favorites");
+          const dataFav = await resFav.json();
+
+          const fav = dataFav.find((f) => f.jokeid === joke.id);
+          if (fav) {
+            setIsFav(true);
+            setFavId(fav.id);
+          }
         }
       } catch (err) {
         setError(err);
@@ -25,16 +39,58 @@ const JokeCard = ({ joke, refreshJokes }) => {
         setLoading(false);
       }
     }
-    loadProfile();
-  }, []);
+    loadProfileAndFavs();
+  }, [isAuthenticated, apiFetch, joke.id]);
 
-  const cardHeadStyle = {
-    marginBottom: "50px",
-    marginTop: "20px",
+  const [rating, setRating] = useState(3);
+  const [showCard, setShowCard] = useState(false);
+  const [isRated, setIsRated] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  const handleAddToFav = async (e, jokeId) => {
+  e.stopPropagation();
+  try {
+    const res = await apiFetch("/favorites/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jokeid: jokeId }),
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      console.error("Backend error:", errData);
+      throw new Error("Failed to add to favorites");
+    }
+
+    const data = await res.json();
+    setIsFav(true);
+    setFavId(data.id);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+  const handleRate = (e) => {
+    e.stopPropagation();
+    setIsRated(true);
   };
 
-  const cardBodyStyle = {
-    marginBottom: "40px",
+  const handleDelete = async (e, jokeId) => {
+    e.stopPropagation();
+    if (window.confirm("Tényleg törölni akarod?")) {
+      try {
+        setDeleting(true);
+        const res = await apiFetch(`/api/deletejoke/${jokeId}/`, {
+          method: "DELETE",
+        });
+        if (!res.ok) throw new Error("Failed to delete joke");
+        refreshJokes();
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setDeleting(false);
+      }
+    }
   };
 
   const deletStyle = {
@@ -43,81 +99,34 @@ const JokeCard = ({ joke, refreshJokes }) => {
     alignItems: "center",
   };
 
-  const [rating, setRating] = useState(3);
-  const [showCard, setShowCard] = useState(false);
-
-  // TODO: change to fetch instead of useState
-  const [isRated, setIsRated] = useState(false);
-  const [isFav, setIsFav] = useState(false);
-
-  const [deleting, setDeleting] = useState(false);
-
-  const handleAddToFav = (e) => {
-    e.stopPropagation();
-    setIsFav(true);
-  };
-
-  const handleRate = (e) => {
-    e.stopPropagation();
-    setIsRated(true);
-  };
-
-  const handleDelete = async (e, jokeId) => {
-  e.stopPropagation();
-  if (window.confirm("Tényleg törölni akarod?") === true){
-    try {
-      setDeleting(true);
-      const res = await apiFetch(`/api/deletejoke/${jokeId}/`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed to delete joke");
-
-      refreshJokes();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setDeleting(false);
-    }
-  }
-};
-
   const cardContent = (
     <>
       <div style={deletStyle}>
-        <h5 className="card-title" style={cardHeadStyle}>
+        <h5 className="card-title" style={{ marginBottom: "50px", marginTop: "20px" }}>
           {joke.username}
         </h5>
         {isAuthenticated &&
-          (joke.username === profile?.username ? (
-            <button
-              onClick={(e) => handleDelete(e, joke.id)}
-              type="button"
-              className="btn btn-danger"
-            >
+          (showDeleteButton ? (
+            <button onClick={(e) => handleDelete(e, joke.id)} className="btn btn-danger">
               Törlés
             </button>
           ) : !isFav ? (
-            <button
-              onClick={handleAddToFav}
-              type="button"
-              className="btn btn-warning"
-            >
+            <button onClick={(e) => handleAddToFav(e, joke.id)} type="button" className="btn btn-warning">
               Kedvencekhez adás
             </button>
           ) : (
             <span>Kedvencekhez adva</span>
-          ))}
+          )
+        )}
       </div>
-      <p className="card-text" style={cardBodyStyle}>
+      <p className="card-text" style={{ marginBottom: "40px" }}>
         {joke.joke}
       </p>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Rating
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
+          onClick={(e) => e.stopPropagation()}
           value={rating}
-          onChange={(event, newValue) => {
-            setRating(newValue);
-          }}
+          onChange={(event, newValue) => setRating(newValue)}
         />
         <div>
           <span>{joke.rate}</span>
@@ -139,9 +148,7 @@ const JokeCard = ({ joke, refreshJokes }) => {
           Értékelés
         </button>
       )}
-      {isRated && (
-        <span className="text-success">Köszönjük az értékelést!</span>
-      )}
+      {isRated && <span className="text-success">Köszönjük az értékelést!</span>}
     </>
   );
 
