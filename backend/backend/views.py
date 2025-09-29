@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.http import HttpResponse
-from jokes.models import UserProfile, Joke
+from jokes.models import UserProfile, Joke, Favorite
 from rest_framework import status
 from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -108,3 +108,13 @@ class JokeDeleteView(generics.DestroyAPIView):
         joke.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class FavoriteListCreateView(generics.ListCreateAPIView):
+    serializer_class = sr.FavoriteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Favorite.objects.filter(userid=self.request.user).select_related("jokeid")
+
+    def perform_create(self, serializer):
+        serializer.save(userid=self.request.user)

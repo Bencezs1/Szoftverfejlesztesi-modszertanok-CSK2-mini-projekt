@@ -29,4 +29,5 @@ urlpatterns = [
     path("api/jokes/", views.UserJokesView.as_view(), name="user-jokes"),
     path("api/alljokes/", views.AllJokesView.as_view(), name="all-jokes"),
     path("api/deletejoke/<int:pk>/", views.JokeDeleteView.as_view(), name="delete-joke"),
+    path("favorites/", views.FavoriteListCreateView.as_view(), name="favorites"),
 ]

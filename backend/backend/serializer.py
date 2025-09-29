@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from jokes.models import UserProfile, Joke
+from jokes.models import UserProfile, Joke, Favorite
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -63,3 +63,19 @@ class JokeSerializer(serializers.ModelSerializer):
         """
         user = self.context["request"].user
         return Joke.objects.create(user=user, **validated_data)
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="userid.user_name", read_only=True)
+    joke_text = serializers.CharField(source="jokeid.joke", read_only=True)
+
+    class Meta:
+        model = Favorite
+        fields = ["id", "jokeid", "joke_text", "username"]
+        read_only_fields = ["id", "joke_text", "username"]
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        joke = validated_data["jokeid"]
+
+        favorite, created = Favorite.objects.get_or_create(userid=user, jokeid=joke)
+        return favorite
